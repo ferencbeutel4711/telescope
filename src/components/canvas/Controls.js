@@ -34,46 +34,42 @@ export default class Controls {
     }
 
     onMouseDown(event) {
-        this.dragX = event.clientX - this.canvas.parentNode.getBoundingClientRect().left
-        this.dragY = event.clientY - this.canvas.parentNode.getBoundingClientRect().top
+        this.dragX = event.offsetX
+        this.dragY = event.offsetY
         this.isDragging = true
+    }
+
+    onMouseLeave() {
+        this.isDragging = false
     }
 
     onMouseMove(event) {
         if (this.isDragging) {
-            const x = event.clientX - this.canvas.parentNode.getBoundingClientRect().left
-            const y = event.clientY - this.canvas.parentNode.getBoundingClientRect().top
+            this.handleMouseMoveForDimension(event, 'X');
+            this.handleMouseMoveForDimension(event, 'Y');
+        }
+    }
 
-            let draggedAmountX = (this.dragX - x) * (this.zoomLevel === 0 ? 1 : this.zoomLevel < 0 ? -this.zoomLevel : 1 / this.zoomLevel)
-            let draggedAmountY = (this.dragY - y) * (this.zoomLevel === 0 ? 1 : this.zoomLevel < 0 ? -this.zoomLevel : 1 / this.zoomLevel)
+    handleMouseMoveForDimension(event, dimension) {
+        const isX = dimension === 'X';
+        const canvasLength = isX ? this.canvas.width : this.canvas.height
+        const scaledCanvasLength = (isX ? this.canvasWidth : this.canvasHeight) / this.scale
+        const notAtLowerBounds = this[`orig${dimension}`] !== 0
+        const notAtUpperBounds = this[`orig${dimension}`] + scaledCanvasLength !== canvasLength
+        const offset = event[`offset${dimension}`]
+        let draggedAmount = (this[`drag${dimension}`] - offset) * (this.zoomLevel === 0 ? 1 : this.zoomLevel < 0 ? -this.zoomLevel : 1 / this.zoomLevel)
 
-            this.origX += draggedAmountX
-            this.origY += draggedAmountY
-
-            if (this.origX < 0) {
-                this.origX = 0
-            } else {
-                let scaledCanvasWidth = this.canvasWidth / this.scale;
-                if (this.origX + scaledCanvasWidth > this.canvas.width) {
-                    this.origX = this.canvas.width - scaledCanvasWidth
-                } else {
-                    this.ctx.translate(-draggedAmountX, 0)
-                }
+        if (notAtLowerBounds && notAtUpperBounds || !notAtLowerBounds && draggedAmount > 0 || !notAtUpperBounds && draggedAmount < 0) {
+            let newOrig = this[`orig${dimension}`] + draggedAmount;
+            if (newOrig < 0) {
+                draggedAmount = -this[`orig${dimension}`]
+            } else if (newOrig + scaledCanvasLength > canvasLength) {
+                draggedAmount = canvasLength - this[`orig${dimension}`] - scaledCanvasLength
             }
 
-            if (this.origY < 0) {
-                this.origY = 0
-            } else {
-                let scaledCanvasHeight = this.canvasHeight / this.scale;
-                if (this.origY + scaledCanvasHeight > this.canvas.height) {
-                    this.origY = this.canvas.height - scaledCanvasHeight
-                } else {
-                    this.ctx.translate(0, -draggedAmountY)
-                }
-            }
-
-            this.dragX = x
-            this.dragY = y
+            this.ctx.translate(isX ? -draggedAmount : 0, dimension === 'Y' ? -draggedAmount : 0)
+            this[`orig${dimension}`] += draggedAmount
+            this[`drag${dimension}`] = offset
         }
     }
 
@@ -82,8 +78,8 @@ export default class Controls {
     }
 
     zoomAt(event) {
-        const x = event.clientX - this.canvas.parentNode.getBoundingClientRect().left
-        const y = event.clientY - this.canvas.parentNode.getBoundingClientRect().top
+        const x = event.offsetX
+        const y = event.offsetY
         const scroll = event.deltaY < 0 ? 1 : -1
 
         this.zoomLevel += scroll

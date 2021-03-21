@@ -1,6 +1,6 @@
 <template>
   <div id="nav">
-    <router-link to="/">Universe-Maker</router-link>
+    <router-link to="/">Universe-Maker</router-link> |
     <router-link to="/starmap">Starmap</router-link>
   </div>
   <router-view />

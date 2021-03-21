@@ -1,6 +1,6 @@
 <template>
   <h1>Universe-Maker</h1>
-  <h3>Werde Gott & erstelle dein Universum</h3>
+  <h3>WIP - Management-Tool für Sci-Fi P&P-Universen</h3>
 </template>
 
 <script>

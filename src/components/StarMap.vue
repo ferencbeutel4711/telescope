@@ -1,10 +1,12 @@
 <template>
   <p>Starmap</p>
+  <p>origX: {{ origX }}</p>
+  <p>origY: {{ origY }}</p>
   <div class="starmap-container">
     <transition name="blur">
       <div class="starmap-blur" v-if="interactionLocked"/>
     </transition>
-    <canvas id="starmap" class="starmap" :height="10000" :width="10000" @wheel="handleZoom"/>
+    <canvas id="starmap" class="starmap" :height="10000" :width="10000" @wheel.prevent="handleZoom"/>
     <StarInfo class="starinfo" :style="{
       left: `${selectedStar.screenPoint.x - 350}px`,
       top: `${selectedStar.screenPoint.y - 800}px`
@@ -109,6 +111,8 @@ export default {
     let interactionLocked = ref(false)
     let selectedStar = ref()
     let hoveredStar = ref()
+    let origX = ref()
+    let origY = ref()
 
     const draw = () => {
       // reset canvas elements
@@ -159,6 +163,11 @@ export default {
 
       controls = new Controls(ctx, canvas, startingX, startingY, canvasWidth, canvasHeight)
 
+      setInterval(() => {
+        origX.value = controls.getCurrentOrigX()
+        origY.value = controls.getCurrentOrigY()
+      }, 50)
+
       canvas.addEventListener('mousedown', (event) => {
         event.preventDefault()
 
@@ -166,6 +175,10 @@ export default {
           controls.onMouseDown(event)
           stars.forEach((star) => star.onMouseDown(event))
         }
+      })
+
+      canvas.addEventListener('mouseleave', () => {
+        controls.onMouseLeave()
       })
 
       canvas.addEventListener('mousemove', (event) => {
@@ -216,7 +229,15 @@ export default {
       interactionLocked.value = false
     }
 
-    return {handleZoom, interactionLocked, starInfoClosed, selectedStar, hoveredStar}
+    return {
+      handleZoom,
+      interactionLocked,
+      starInfoClosed,
+      selectedStar,
+      hoveredStar,
+      origX,
+      origY
+    }
   }
 }
 </script>
