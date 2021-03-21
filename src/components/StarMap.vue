@@ -45,16 +45,50 @@ const starmapData = {
         y: 5000,
         size: 10
       },
-      gates: [
+      planets: [
         {
-          name: 'Sol -> Alpha I',
-          target: 'Alpha I',
-          tier: 'SMALL'
+          name: 'Merkur',
+          officialName: 'Sol-1',
         },
         {
+          name: 'Venus',
+          officialName: 'Sol-2',
+        },
+        {
+          name: 'Erde',
+          officialName: 'Sol-3',
+        },
+        {
+          name: 'Mars',
+          officialName: 'Sol-4',
+        },
+        {
+          name: 'Jupiter',
+          officialName: 'Sol-5',
+        },
+        {
+          name: 'Saturn',
+          officialName: 'Sol-6',
+        },
+        {
+          name: 'Uranus',
+          officialName: 'Sol-7',
+        },
+        {
+          name: 'Neptun',
+          officialName: 'Sol-8',
+        },
+      ],
+      gates: [
+        {
           name: 'First Contact',
+          target: 'Alpha I',
+          tier: 'SMALL',
+        },
+        {
+          name: 'New Horizon',
           target: 'Alpha II',
-          tier: 'MEDIUM'
+          tier: 'MEDIUM',
         }
       ]
     },
@@ -68,9 +102,15 @@ const starmapData = {
         y: 4500,
         size: 20
       },
+      planets: [
+        {
+          name: 'unknown',
+          officialName: 'Alpha I-1',
+        },
+      ],
       gates: [
         {
-          name: 'Alpha I -> Alpha II',
+          name: 'Gate I',
           target: 'Alpha II',
           tier: 'SMALL'
         }
@@ -86,14 +126,24 @@ const starmapData = {
         y: 5200,
         size: 18
       },
+      planets: [
+        {
+          name: 'unknown',
+          officialName: 'Alpha II-1',
+        },
+        {
+          name: 'unknown',
+          officialName: 'Alpha II-2',
+        },
+      ],
       gates: [
         {
-          name: 'Alpha II -> Alpha I',
+          name: 'Gate I',
           target: 'Alpha I',
           tier: 'SMALL'
         },
         {
-          name: 'First Encounter',
+          name: 'Gate II',
           target: 'Sol',
           tier: 'MEDIUM'
         }
