@@ -1,6 +1,7 @@
 import {createRouter, createWebHashHistory} from "vue-router";
 import StarmapView from "../views/StarmapView.vue";
 import HomeView from "../views/HomeView.vue";
+import {publicPath} from '@/../vue.config'
 
 const routes = [
     {
@@ -16,7 +17,7 @@ const routes = [
 ];
 
 const router = createRouter({
-    history: createWebHashHistory(),
+    history: createWebHashHistory(publicPath),
     routes
 });
 
