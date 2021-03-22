@@ -10,10 +10,10 @@ const routes = [
         component: HomeView
     },
     {
-        path: "/starmap",
+        path: "/starmap/:system?",
         name: "Starmap",
         component: StarmapView
-    }
+    },
 ];
 
 const router = createRouter({

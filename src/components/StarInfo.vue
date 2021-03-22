@@ -17,19 +17,24 @@
         </div>
       </div>
     </div>
-    <div class="star-info__visit-system-link"><span>Visit System</span></div>
+    <div class="star-info__visit-system-link" @click="visitSystem"><span>Visit System</span></div>
   </div>
 </template>
 <script>
+import {useRouter} from 'vue-router'
+
 export default {
   name: "StarInfo",
   props: {
     star: Object
   },
   setup(props, {emit}) {
-    const close = () => emit('starInfoClosed')
+    const router = useRouter()
 
-    return {close}
+    const close = () => emit('starInfoClosed')
+    const visitSystem = () => router.push({path: `/starmap/${props.star.name}`})
+
+    return {close, visitSystem}
   }
 }
 </script>

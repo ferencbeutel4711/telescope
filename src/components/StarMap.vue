@@ -17,8 +17,8 @@
       top: `${selectedStar.screenPoint.y - 800}px`
     }" v-if="selectedStar" :star="selectedStar.star" @starInfoClosed="starInfoClosed"/>
     <StarQuickInfo class="star-quickinfo" :style="{
-      left: `${hoveredStar.screenPoint.x + 30}px`,
-      top: `${hoveredStar.screenPoint.y - 40}px`
+      left: `${hoveredStar.screenPoint.x + hoveredStar.star.position.size + 10}px`,
+      top: `${hoveredStar.screenPoint.y - hoveredStar.star.position.size - 20}px`
     }" v-if="hoveredStar" :star="hoveredStar.star"/>
   </div>
 </template>
@@ -31,6 +31,7 @@ import StarInfo from "@/components/StarInfo";
 import StarQuickInfo from "@/components/StarQuickInfo";
 import {findAndMap} from "@/util/IteratorUtil";
 import CanvasBackground from "@/components/canvas/CanvasBackground";
+import universeConfig from '@/universeConfig'
 
 // TODO: use in styling
 const htmlWidth = 1800
@@ -38,131 +39,6 @@ const htmlHeight = 1100
 
 const startingX = 3000
 const startingY = 4200
-
-const starmapData = {
-  stars: [
-    {
-      name: 'Sol',
-      style: {
-        hue: 45,
-        saturation: 78,
-        lightness: 72,
-      },
-      position: {
-        x: 5000,
-        y: 5000,
-        size: 20
-      },
-      planets: [
-        {
-          name: 'Merkur',
-          officialName: 'Sol-1',
-        },
-        {
-          name: 'Venus',
-          officialName: 'Sol-2',
-        },
-        {
-          name: 'Erde',
-          officialName: 'Sol-3',
-        },
-        {
-          name: 'Mars',
-          officialName: 'Sol-4',
-        },
-        {
-          name: 'Jupiter',
-          officialName: 'Sol-5',
-        },
-        {
-          name: 'Saturn',
-          officialName: 'Sol-6',
-        },
-        {
-          name: 'Uranus',
-          officialName: 'Sol-7',
-        },
-        {
-          name: 'Neptun',
-          officialName: 'Sol-8',
-        },
-      ],
-      gates: [
-        {
-          name: 'First Contact',
-          target: 'Alpha I',
-          tier: 'SMALL',
-        },
-        {
-          name: 'New Horizon',
-          target: 'Alpha II',
-          tier: 'MEDIUM',
-        }
-      ]
-    },
-    {
-      name: 'Alpha I',
-      style: {
-        hue: 28,
-        saturation: 58,
-        lightness: 60,
-      },
-      position: {
-        x: 4300,
-        y: 4500,
-        size: 40
-      },
-      planets: [
-        {
-          name: 'unknown',
-          officialName: 'Alpha I-1',
-        },
-      ],
-      gates: [
-        {
-          name: 'Gate I',
-          target: 'Alpha II',
-          tier: 'SMALL'
-        }
-      ]
-    },
-    {
-      name: 'Alpha II',
-      style: {
-        hue: 227,
-        saturation: 37,
-        lightness: 80,
-      },
-      position: {
-        x: 3300,
-        y: 5200,
-        size: 36
-      },
-      planets: [
-        {
-          name: 'unknown',
-          officialName: 'Alpha II-1',
-        },
-        {
-          name: 'unknown',
-          officialName: 'Alpha II-2',
-        },
-      ],
-      gates: [
-        {
-          name: 'Gate I',
-          target: 'Alpha I',
-          tier: 'SMALL'
-        },
-        {
-          name: 'Gate II',
-          target: 'Sol',
-          tier: 'MEDIUM'
-        }
-      ]
-    },
-  ]
-}
 
 const debug = false
 
@@ -228,7 +104,7 @@ export default {
       ctx.restore()
 
       // draw gates first to move them under the stars
-      starmapData.stars.forEach((star) => star.gates.forEach((gate) => new CanvasGate(canvas, gate, star, starmapData.stars)))
+      universeConfig.stars.forEach((star) => star.gates.forEach((gate) => new CanvasGate(canvas, gate, star, universeConfig.stars)))
 
       // draw stars
       stars.forEach((star) => star.draw())
@@ -343,8 +219,10 @@ export default {
           controls.onMouseMove(event, false)
 
           hoveredStar.value = null
+          document.body.style.cursor = 'default'
           const foundStar = findAndMap(stars, (v) => v != null, (star) => star.onMouseMove(event))
           if (foundStar) {
+            document.body.style.cursor = 'pointer'
             hoveredStar.value = foundStar
           }
         }
@@ -364,14 +242,14 @@ export default {
         }
       })
 
-      stars = starmapData.stars.map((star) => new CanvasStar(canvas, star, controls, htmlWidth, htmlHeight))
+      stars = universeConfig.stars.map((star) => new CanvasStar(canvas, star, controls, htmlWidth, htmlHeight))
 
       // move to start
       controls.scrollToOrig(startingX, startingY)
 
       setInterval(() => {
         draw();
-      }, 800 / 60)
+      }, 10)
     })
 
     const handleZoom = (e) => {
@@ -429,6 +307,7 @@ export default {
 
 .star-quickinfo {
   position: absolute;
+  z-index: 900;
 }
 
 .starmap {
