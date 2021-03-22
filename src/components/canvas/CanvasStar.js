@@ -26,11 +26,20 @@ export default class CanvasStar {
 
     draw() {
         const ctx = this.canvas.getContext('2d')
+        ctx.save()
         ctx.beginPath()
         ctx.arc(this.star.position.x, this.star.position.y, this.star.position.size, 0, 2 * Math.PI)
-        ctx.fillStyle = this.star.style.color
+
+        const grad = ctx.createRadialGradient(this.star.position.x, this.star.position.y, this.star.position.size / 15, this.star.position.x, this.star.position.y, this.star.position.size)
+        grad.addColorStop(0, `hsl(${this.star.style.hue}, ${this.star.style.saturation / 2}%, ${Math.min(100, this.star.style.lightness * 1.5)}%)`)
+        grad.addColorStop(0.8, `hsl(${this.star.style.hue}, ${this.star.style.saturation}%, ${Math.min(100, this.star.style.lightness)}%)`)
+
+        ctx.fillStyle = grad
+        ctx.shadowBlur = this.star.position.size
+        ctx.shadowColor = `hsl(${this.star.style.hue}, ${this.star.style.saturation}%, ${Math.min(100, this.star.style.lightness)}%)`
         ctx.fill()
         ctx.closePath()
+        ctx.restore()
     }
 
     onMouseDown(event) {
@@ -40,7 +49,7 @@ export default class CanvasStar {
     }
 
     onMouseMove(event) {
-        if(isIntersecting(event, this.canvas, this.star, this.controls.getCurrentOrigX(), this.controls.getCurrentOrigY(), this.controls.getCurrentScale())) {
+        if (isIntersecting(event, this.canvas, this.star, this.controls.getCurrentOrigX(), this.controls.getCurrentOrigY(), this.controls.getCurrentScale())) {
             return {
                 star: this.star,
                 screenPoint: screenPointForStarCenter(this.star, this.controls.getCurrentOrigX(), this.controls.getCurrentOrigY(), this.controls.getCurrentScale())
