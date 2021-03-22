@@ -1,10 +1,10 @@
 const generateBackgroundStar = (canvas, zindex) => {
-    const colorSeed = Math.random();
+    const colorSeed = Math.max(100, Math.random() * 255);
     return {
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         r: Math.random() * zindex,
-        color: `rgba(${colorSeed * 255}, ${colorSeed * 255}, ${colorSeed * 255}, 1)`,
+        color: `rgba(${colorSeed}, ${colorSeed}, ${colorSeed}, 1)`,
         glow: Math.random() * zindex * 3
     }
 }
