@@ -33,10 +33,6 @@ import {findAndMap} from "@/util/IteratorUtil";
 import CanvasBackground from "@/components/canvas/CanvasBackground";
 import universeConfig from '@/universeConfig'
 
-// TODO: use in styling
-const htmlWidth = 1800
-const htmlHeight = 1100
-
 const startingX = 3000
 const startingY = 4200
 
@@ -189,7 +185,7 @@ export default {
         },
       ]
 
-      controls = new Controls(canvas, backgroundCanvasList, htmlWidth, htmlHeight)
+      controls = new Controls(canvas, backgroundCanvasList)
 
       debugInterval = setInterval(() => {
         debugOrigXList.value = [{
@@ -248,7 +244,7 @@ export default {
       };
       canvas.addEventListener('mouseup', onMouseUpListener)
 
-      stars = universeConfig.stars.map((star) => new CanvasStar(canvas, star, controls, htmlWidth, htmlHeight))
+      stars = universeConfig.stars.map((star) => new CanvasStar(canvas, star, controls))
 
       // move to start
       controls.scrollToOrig(startingX, startingY)
@@ -292,11 +288,11 @@ export default {
 </script>
 <style lang="scss" scoped>
 .starmap-container {
-  height: 1100px;
+  height: calc(100vh - 80px);
   margin: 0 auto;
   overflow: hidden;
   position: relative;
-  width: 1800px;
+  width: 100vw;
 }
 
 .blur-enter-active, .blur-leave-active {

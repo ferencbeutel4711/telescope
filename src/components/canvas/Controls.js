@@ -1,5 +1,5 @@
 export default class Controls {
-    constructor(primaryCanvas, backgroundCanvasList, htmlWidth, htmlHeight) {
+    constructor(primaryCanvas, backgroundCanvasList) {
         this.zoomIntensity = 0.2
 
         this.origX = 0
@@ -17,9 +17,6 @@ export default class Controls {
         this.draggingBackLockedY = false
         this.draggingForwardsLockedX = false
         this.draggingForwardsLockedY = false
-
-        this.htmlWidth = htmlWidth
-        this.htmlHeight = htmlHeight
 
         this.zoomLevel = 0
         this.scale = 1
@@ -80,7 +77,7 @@ export default class Controls {
 
         let draggedAmount = (this[`dragOffset${dimension}`] - offset) * (this.zoomLevel === 0 ? 1 : this.zoomLevel < 0 ? -this.zoomLevel / 2 : (1 / this.zoomLevel) * 2)
 
-        const scaledCanvasLength = (isX ? this.htmlWidth : this.htmlHeight) / this.scale
+        const scaledCanvasLength = (isX ? this.primaryCanvas.parentNode.clientWidth : this.primaryCanvas.parentNode.clientHeight) / this.scale
         const canvasLength = isX ? this.primaryCanvas.width : this.primaryCanvas.height
 
         const isDraggingBack = draggedAmount < 0
@@ -143,7 +140,7 @@ export default class Controls {
             ctx.translate(this.origX, this.origY)
 
             const zoom = Math.exp(scroll * this.zoomIntensity)
-            const {newOrigX, newOrigY} = this.scaleOrig(x, y, zoom, this.origX, this.origY, this.primaryCanvas, this.scale, 1);
+            const {newOrigX, newOrigY} = this.scaleOrig(x, y, zoom, this.origX, this.origY, this.primaryCanvas, this.scale, 1, this.primaryCanvas.parentNode.clientWidth, this.primaryCanvas.parentNode.clientHeight);
 
             this.origX = newOrigX
             this.origY = newOrigY
@@ -173,14 +170,14 @@ export default class Controls {
         }
     }
 
-    scaleOrig(x, y, zoom, origX, origY, canvas, scale, parallax) {
+    scaleOrig(x, y, zoom, origX, origY, canvas, scale, parallax, htmlWidth, htmlHeight) {
         let newOrigX = origX - (x / (scale * zoom) - x / scale) * parallax
         let newOrigY = origY - (y / (scale * zoom) - y / scale) * parallax
 
         if (newOrigX < 0) {
             newOrigX = 0
         } else {
-            let scaledCanvasWidth = this.htmlWidth / (scale * zoom);
+            let scaledCanvasWidth = htmlWidth / (scale * zoom);
             if (newOrigX + scaledCanvasWidth > canvas.width) {
                 newOrigX = canvas.width - scaledCanvasWidth
             }
@@ -189,7 +186,7 @@ export default class Controls {
         if (newOrigY < 0) {
             newOrigY = 0
         } else {
-            let scaledCanvasHeight = this.htmlHeight / (scale * zoom);
+            let scaledCanvasHeight = htmlHeight / (scale * zoom);
             if (newOrigY + scaledCanvasHeight > canvas.height) {
                 newOrigY = canvas.height - scaledCanvasHeight
             }
