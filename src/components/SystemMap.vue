@@ -55,7 +55,7 @@ export default {
       // draw star
       ctx.save()
       ctx.beginPath()
-      const starRadius = 80;
+      const starRadius = star.value.position.size * 4;
       const centerX = canvasWidth / 2
       const centerY = canvasHeight / 2
 
