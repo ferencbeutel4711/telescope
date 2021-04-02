@@ -7,7 +7,7 @@
       <p v-for="bg in debugOrigXList" :key="bg.key">{{ bg.key }} : {{ bg.value }}</p>
     </div>
     <canvas id="starmap" class="starmap" :height="10000" :width="10000" @wheel.prevent="handleZoom"/>
-    <canvas id="background-0" style="z-index: -1" class="background background-0" :height="2000" :width="2000"/>
+    <canvas id="background-0" style="z-index: -1" class="background background-0" :height="7500" :width="7500"/>
     <canvas id="background-1" style="z-index: 8" class="background" :height="7500" :width="7500"/>
     <canvas id="background-2" style="z-index: 6" class="background" :height="7500" :width="7500"/>
     <canvas id="background-3" style="z-index: 4" class="background" :height="7500" :width="7500"/>
