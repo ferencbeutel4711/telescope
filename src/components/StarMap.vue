@@ -239,6 +239,7 @@ export default {
             hoveredStar.value = null
             selectedStar.value = clickedStar
             interactionLocked.value = true
+            document.body.style.cursor = 'default'
           }
         }
       };
