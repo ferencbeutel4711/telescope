@@ -1,5 +1,7 @@
 # telescope
 
+https://ferencbeutel4711.github.io/telescope/#/starmap
+
 ## Project setup
 ```
 npm install
