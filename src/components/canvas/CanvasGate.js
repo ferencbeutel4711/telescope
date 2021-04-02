@@ -14,6 +14,20 @@ const determineStyle = (tier) => {
                 arrowLength: 10,
                 arrowSize: 10
             }
+        case GateTiers.LARGE:
+            return {
+                strokeStyle: '#c640e3',
+                lineWidth: 3,
+                arrowLength: 14,
+                arrowSize: 14
+            }
+        case GateTiers.CAPITAL:
+            return {
+                strokeStyle: '#c410e7',
+                lineWidth: 4,
+                arrowLength: 20,
+                arrowSize: 20
+            }
         default:
             console.error(`unknown gate tier: ${tier}`)
             return null
@@ -70,5 +84,7 @@ export default class CanvasGate {
 
 export const GateTiers = {
     SMALL: 'SMALL',
-    MEDIUM: 'MEDIUM'
+    MEDIUM: 'MEDIUM',
+    LARGE: 'LARGE',
+    CAPITAL: 'CAPITAL',
 }
