@@ -9,7 +9,7 @@
     }" v-if="hoveredPlanet" :planet="hoveredPlanet.getPlanet()"/>
 </template>
 <script>
-import {ref, onMounted} from 'vue'
+import {ref, onMounted, onUnmounted} from 'vue'
 import universeConfig from '@/universeConfig'
 import CanvasPlanet from "@/components/canvas/CanvasPlanet";
 import PlanetQuickInfo from "@/components/PlanetQuickInfo";
@@ -25,6 +25,8 @@ export default {
   setup(props) {
     const star = ref(universeConfig.stars.find(s => s.name === props.system))
     const hoveredPlanet = ref()
+
+    let drawInterval, rotationInterval, onMouseMoveListener
 
     let canvasContainer, canvas, canvasBg
 
@@ -86,7 +88,7 @@ export default {
         canvasPlanets.push(new CanvasPlanet(canvas, planet))
       })
 
-      canvas.addEventListener('mousemove', (event) => {
+      onMouseMoveListener = (event) => {
         hoveredPlanet.value = null
         document.body.style.cursor = 'default'
         const foundPlanet = canvasPlanets.find((canvasPlanet) => canvasPlanet.isIntersecting(event))
@@ -94,19 +96,26 @@ export default {
           document.body.style.cursor = 'pointer'
           hoveredPlanet.value = foundPlanet
         }
-      })
+      };
+      canvas.addEventListener('mousemove', onMouseMoveListener)
 
       // draw loop
-      setInterval(() => {
+      drawInterval = setInterval(() => {
         draw();
       }, 10)
 
       // planet rotation loop
-      setInterval(() => {
+      rotationInterval = setInterval(() => {
         if (!hoveredPlanet.value) {
           canvasPlanets.forEach((canvasPlanet) => planetDegs[canvasPlanet.getName()] = (planetDegs[canvasPlanet.getName()] + canvasPlanet.getPlanet().rotationSpeed))
         }
       }, 50)
+    })
+
+    onUnmounted(() => {
+      clearInterval(drawInterval)
+      clearInterval(rotationInterval)
+      canvas.removeEventListener('mousemove', onMouseMoveListener)
     })
 
     return {hoveredPlanet}

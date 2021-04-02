@@ -23,7 +23,7 @@
   </div>
 </template>
 <script>
-import {onMounted, ref} from 'vue'
+import {onMounted, ref, onUnmounted} from 'vue'
 import CanvasStar from "@/components/canvas/CanvasStar"
 import CanvasGate from "@/components/canvas/CanvasGate";
 import Controls from "@/components/canvas/Controls";
@@ -48,6 +48,8 @@ export default {
   name: "Starmap",
   components: {StarInfo, StarQuickInfo},
   setup() {
+    let debugInterval, drawInterval, onMouseDownListener, onMouseLeaveListener, onMouseMoveListener, onMouseUpListener
+
     let canvas, backgroundCanvasList, controls
     let stars = []
     let interactionLocked = ref(false)
@@ -189,7 +191,7 @@ export default {
 
       controls = new Controls(canvas, backgroundCanvasList, htmlWidth, htmlHeight)
 
-      setInterval(() => {
+      debugInterval = setInterval(() => {
         debugOrigXList.value = [{
           key: 'primary',
           value: controls.getCurrentOrigX()
@@ -199,20 +201,22 @@ export default {
         }))]
       }, 50)
 
-      canvas.addEventListener('mousedown', (event) => {
+      onMouseDownListener = (event) => {
         event.preventDefault()
 
         if (!interactionLocked.value) {
           controls.onMouseDown(event)
           stars.forEach((star) => star.onMouseDown(event))
         }
-      })
+      };
+      canvas.addEventListener('mousedown', onMouseDownListener)
 
-      canvas.addEventListener('mouseleave', () => {
+      onMouseLeaveListener = () => {
         controls.onMouseLeave()
-      })
+      };
+      canvas.addEventListener('mouseleave', onMouseLeaveListener)
 
-      canvas.addEventListener('mousemove', (event) => {
+      onMouseMoveListener = (event) => {
         event.preventDefault()
 
         if (!interactionLocked.value) {
@@ -226,9 +230,10 @@ export default {
             hoveredStar.value = foundStar
           }
         }
-      })
+      };
+      canvas.addEventListener('mousemove', onMouseMoveListener)
 
-      canvas.addEventListener('mouseup', (event) => {
+      onMouseUpListener = (event) => {
         event.preventDefault()
 
         if (!interactionLocked.value) {
@@ -240,16 +245,26 @@ export default {
             interactionLocked.value = true
           }
         }
-      })
+      };
+      canvas.addEventListener('mouseup', onMouseUpListener)
 
       stars = universeConfig.stars.map((star) => new CanvasStar(canvas, star, controls, htmlWidth, htmlHeight))
 
       // move to start
       controls.scrollToOrig(startingX, startingY)
 
-      setInterval(() => {
+      drawInterval = setInterval(() => {
         draw();
       }, 10)
+    })
+
+    onUnmounted(() => {
+      clearInterval(debugInterval)
+      clearInterval(drawInterval)
+      canvas.removeEventListener('mousedown', onMouseDownListener)
+      canvas.removeEventListener('mouseleave', onMouseLeaveListener)
+      canvas.removeEventListener('mousemove', onMouseMoveListener)
+      canvas.removeEventListener('mouseup', onMouseUpListener)
     })
 
     const handleZoom = (e) => {
