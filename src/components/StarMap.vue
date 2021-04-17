@@ -195,7 +195,7 @@ export default {
           key: 'bg1',
           value: bg.origX
         }))]
-      }, 50)
+      }, 100)
 
       onMouseDownListener = (event) => {
         event.preventDefault()
@@ -252,7 +252,7 @@ export default {
 
       drawInterval = setInterval(() => {
         draw();
-      }, 10)
+      }, 50)
     })
 
     onUnmounted(() => {

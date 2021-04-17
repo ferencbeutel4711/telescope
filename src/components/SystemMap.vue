@@ -102,7 +102,7 @@ export default {
       // draw loop
       drawInterval = setInterval(() => {
         draw();
-      }, 10)
+      }, 50)
 
       // planet rotation loop
       rotationInterval = setInterval(() => {
