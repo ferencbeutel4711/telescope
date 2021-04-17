@@ -93,6 +93,11 @@ module.exports = {
                     tier: 'CAPITAL',
                 },
                 {
+                    name: 'First Contact',
+                    target: 'Diapsida',
+                    tier: 'LARGE',
+                },
+                {
                     name: 'New Frontier',
                     target: 'Beta Caeli',
                     tier: 'MEDIUM',
@@ -360,8 +365,135 @@ module.exports = {
                     rotationSpeed: 0.4
                 },
             ],
+            gates: []
+        },
+        {
+            name: 'Diapsida',
+            style: {
+                hue: 69,
+                saturation: 34,
+                lightness: 85,
+            },
+            position: {
+                x: 5300,
+                y: 3000,
+                size: 30
+            },
+            planets: [
+                {
+                    name: 'Agamidae',
+                    officialName: 'Agamidae',
+                    startingDeg: 40,
+                    distanceToStar: 0.33,
+                    size: 14,
+                    color: 'rgba(255, 255, 255, 1)',
+                    rotationSpeed: 0.5
+                },
+                {
+                    name: 'Iguanidae',
+                    officialName: 'Iguanidae',
+                    startingDeg: 100,
+                    distanceToStar: 0.4,
+                    size: 18,
+                    color: 'rgba(255, 255, 255, 1)',
+                    rotationSpeed: 0.4
+                },
+                {
+                    name: 'Scincidae',
+                    officialName: 'Scincidae',
+                    startingDeg: 200,
+                    distanceToStar: 0.51,
+                    size: 22,
+                    color: 'rgba(255, 255, 255, 1)',
+                    rotationSpeed: 0.3
+                },
+                {
+                    name: 'Varinidae',
+                    officialName: 'Varinidae',
+                    startingDeg: 220,
+                    distanceToStar: 0.61,
+                    size: 30,
+                    color: 'rgba(255, 255, 255, 1)',
+                    rotationSpeed: 0.25
+                },
+                {
+                    name: 'Gerrhosauridae',
+                    officialName: 'Gerrhosauridae',
+                    startingDeg: 120,
+                    distanceToStar: 0.7,
+                    size: 24,
+                    color: 'rgba(255, 255, 255, 1)',
+                    rotationSpeed: 0.225
+                },
+                {
+                    name: 'Lacertidae',
+                    officialName: 'Lacertidae',
+                    startingDeg: 10,
+                    distanceToStar: 0.84,
+                    size: 10,
+                    color: 'rgba(255, 255, 255, 1)',
+                    rotationSpeed: 0.1
+                },
+                {
+                    name: 'Xantusiidae',
+                    officialName: 'Xantusiidae',
+                    startingDeg: 140,
+                    distanceToStar: 1.04,
+                    size: 6,
+                    color: 'rgba(255, 255, 255, 1)',
+                    rotationSpeed: 0.05
+                },
+            ],
             gates: [
+                {
+                    name: 'Porta A',
+                    target: 'Sol',
+                    tier: 'LARGE'
+                },
             ]
+        },
+        {
+            name: 'Casterion Bravo',
+            style: {
+                hue: 16,
+                saturation: 100,
+                lightness: 36,
+            },
+            position: {
+                x: 2000,
+                y: 6000,
+                size: 30
+            },
+            planets: [
+                {
+                    name: 'Cyberion',
+                    officialName: 'M1',
+                    startingDeg: 100,
+                    distanceToStar: 0.3,
+                    size: 18,
+                    color: 'rgba(255, 255, 255, 1)',
+                    rotationSpeed: 0.4
+                },
+                {
+                    name: 'Aragassion',
+                    officialName: 'M2',
+                    startingDeg: 140,
+                    distanceToStar: 0.6,
+                    size: 21,
+                    color: 'rgba(255, 255, 255, 1)',
+                    rotationSpeed: 0.6
+                },
+                {
+                    name: 'Helios',
+                    officialName: 'M3',
+                    startingDeg: 200,
+                    distanceToStar: 0.9,
+                    size: 33,
+                    color: 'rgba(255, 255, 255, 1)',
+                    rotationSpeed: 0.1
+                },
+            ],
+            gates: []
         },
     ]
 }
